@@ -63,6 +63,8 @@ public class AgentApiController {
             } else {
                 appointments = appointmentRepository.findByCustomerIdAndStartBetween(userId, fromDateTime, toDateTime);
             }
+        } else if (from != null || to != null) {
+            return ResponseEntity.badRequest().build();
         } else {
             if (isProvider) {
                 appointments = appointmentRepository.findByProviderId(userId);
