@@ -1,9 +1,12 @@
 package com.example.slabiak.appointmentscheduler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DayPlan {
 
     private TimePeroid workingHours;
