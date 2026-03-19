@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/appointments/new/**").hasRole("CUSTOMER")
                         .requestMatchers("/appointments/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
                         .requestMatchers("/invoices/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
+                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
