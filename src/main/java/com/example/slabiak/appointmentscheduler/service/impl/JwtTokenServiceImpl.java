@@ -5,11 +5,13 @@ import com.example.slabiak.appointmentscheduler.service.JwtTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,10 +22,10 @@ import java.util.Date;
 @Component
 public class JwtTokenServiceImpl implements JwtTokenService {
 
-    private String jwtSecret;
+    private final SecretKey key;
 
     public JwtTokenServiceImpl(@Value(value = "${app.jwtSecret}") String jwtSecret) {
-        this.jwtSecret = jwtSecret;
+        this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
@@ -32,8 +34,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         return Jwts.builder()
                 .claim("appointmentId", appointment.getId())
                 .claim("customerId", appointment.getCustomer().getId())
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .expiration(expiryDate)
+                .signWith(key)
                 .compact();
     }
 
@@ -42,7 +44,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         return Jwts.builder()
                 .claim("appointmentId", appointment.getId())
                 .claim("providerId", appointment.getProvider().getId())
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(key)
                 .compact();
     }
 
@@ -50,7 +52,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     @Override
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().verifyWith(key).build().parseSignedClaims(token);
             return true;
         } catch (JwtException e) {
             log.error("Error while token {} validation, error is {}", token, e.getMessage());
@@ -62,27 +64,30 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     @Override
     public int getAppointmentIdFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         return (int) claims.get("appointmentId");
     }
 
     @Override
     public int getCustomerIdFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         return (int) claims.get("customerId");
     }
 
     @Override
     public int getProviderIdFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
         return (int) claims.get("providerId");
     }
 
