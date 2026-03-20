@@ -228,7 +228,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public void cancelUserAppointmentById(int appointmentId, int userId) {
-        Appointment appointment = appointmentRepository.getOne(appointmentId);
+        Appointment appointment = appointmentRepository.getReferenceById(appointmentId);
         if (appointment.getCustomer().getId() == userId || appointment.getProvider().getId() == userId) {
             appointment.setStatus(AppointmentStatus.CANCELED);
             User canceler = userService.getUserById(userId);

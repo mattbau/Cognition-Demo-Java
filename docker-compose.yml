@@ -13,7 +13,7 @@ services:
       - appointmentscheduler_network
 
   appointmentscheduler_db:
-    image: mysql:5.7
+    image: mysql:8.0
     ports:
       - "3306:3306"
     restart: always

@@ -26,12 +26,12 @@
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Scheduled
-                        <span class="badge badge-primary badge-pill"
+                        <span class="badge text-bg-primary rounded-pill"
                               th:text="${numberOfScheduledAppointments}">2</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Canceled this month
-                        <span class="badge badge-danger badge-pill"
+                        <span class="badge text-bg-danger rounded-pill"
                               th:text="${numberOfCanceledAppointments}">1</span>
                     </li>
                 </ul>
@@ -45,11 +45,11 @@
     <div class="col-sm-9">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
                    aria-controls="profile" aria-selected="true">Profile</a>
             </li>
             <li sec:authorize="hasRole('ROLE_PROVIDER') or hasRole('ROLE_CUSTOMER')" class="nav-item">
-                <a class="nav-link" id="newPassword-tab" data-toggle="tab" href="#newPassword" role="tab"
+                <a class="nav-link" id="newPassword-tab" data-bs-toggle="tab" href="#newPassword" role="tab"
                    aria-controls="newPassword" aria-selected="false">Password</a>
             </li>
 

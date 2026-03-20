@@ -4,23 +4,24 @@ import com.example.slabiak.appointmentscheduler.dao.user.UserRepository;
 import com.example.slabiak.appointmentscheduler.entity.user.User;
 import com.example.slabiak.appointmentscheduler.model.ChangePasswordForm;
 import com.example.slabiak.appointmentscheduler.service.impl.UserServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
@@ -40,7 +41,7 @@ public class UserServiceTest {
     private User user;
     private Optional<User> optionalUser;
 
-    @Before
+    @BeforeEach
     public void initObjects() {
         userId = 1;
         passwordEncoded = "encodedpass";
@@ -63,11 +64,11 @@ public class UserServiceTest {
 
     @Test
     public void shouldUpdateUserPassword() {
-        doReturn(new User()).when(userRepository).getOne(userId);
+        doReturn(new User()).when(userRepository).getReferenceById(userId);
         ChangePasswordForm changePasswordForm = new ChangePasswordForm(userId);
         userService.updateUserPassword(changePasswordForm);
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository, times(1)).getOne(userId);
+        verify(userRepository, times(1)).getReferenceById(userId);
         verify(userRepository, times(1)).save(argumentCaptor.capture());
     }
 
@@ -75,7 +76,7 @@ public class UserServiceTest {
     public void shouldEncodeUserPasswordWhileUpdate() {
         User userToBeUpdated = new User();
         userToBeUpdated.setPassword(password);
-        doReturn(userToBeUpdated).when(userRepository).getOne(userId);
+        doReturn(userToBeUpdated).when(userRepository).getReferenceById(userId);
         doReturn(passwordEncoded).when(passwordEncoder).encode(newPassword);
         ChangePasswordForm changePasswordForm = new ChangePasswordForm(userId);
         changePasswordForm.setCurrentPassword(password);
