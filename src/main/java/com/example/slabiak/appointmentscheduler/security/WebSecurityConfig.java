@@ -31,6 +31,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/webjars/**", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
                         .requestMatchers("/api/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
                         .requestMatchers("/customers/all").hasRole("ADMIN")
@@ -45,6 +46,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/appointments/new/**").hasRole("CUSTOMER")
                         .requestMatchers("/appointments/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
                         .requestMatchers("/invoices/**").hasAnyRole("CUSTOMER", "PROVIDER", "ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
