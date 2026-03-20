@@ -3,22 +3,23 @@ package com.example.slabiak.appointmentscheduler.service.work;
 import com.example.slabiak.appointmentscheduler.dao.WorkRepository;
 import com.example.slabiak.appointmentscheduler.entity.Work;
 import com.example.slabiak.appointmentscheduler.service.impl.WorkServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WorkServiceTest {
 
     @Mock
@@ -31,7 +32,7 @@ public class WorkServiceTest {
     private Optional<Work> workOptional;
     private List<Work> works;
 
-    @Before
+    @BeforeEach
     public void initObjects() {
         work = new Work();
         workOptional = Optional.of(work);

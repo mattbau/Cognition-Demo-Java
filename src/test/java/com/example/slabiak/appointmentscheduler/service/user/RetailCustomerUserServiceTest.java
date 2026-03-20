@@ -6,23 +6,24 @@ import com.example.slabiak.appointmentscheduler.entity.user.Role;
 import com.example.slabiak.appointmentscheduler.entity.user.customer.RetailCustomer;
 import com.example.slabiak.appointmentscheduler.model.UserForm;
 import com.example.slabiak.appointmentscheduler.service.impl.UserServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RetailCustomerUserServiceTest {
 
     @Mock
@@ -62,7 +63,7 @@ public class RetailCustomerUserServiceTest {
     Collection<Role> retailCustomerRoles;
 
 
-    @Before
+    @BeforeEach
     public void initObjects() {
 
         userId = 1;
@@ -169,7 +170,7 @@ public class RetailCustomerUserServiceTest {
         RetailCustomer customerToBeUpdated = new RetailCustomer();
         customerToBeUpdated.setId(userId);
 
-        doReturn(customerToBeUpdated).when(retailCustomerRepository).getOne(userId);
+        doReturn(customerToBeUpdated).when(retailCustomerRepository).getReferenceById(userId);
 
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
         userService.updateRetailCustomerProfile(retailUserForm);
@@ -191,7 +192,7 @@ public class RetailCustomerUserServiceTest {
         customerToBeUpdated.setUserName(currentUsername);
         customerToBeUpdated.setPassword(currentPassword);
         customerToBeUpdated.setRoles(retailCustomerRoles);
-        doReturn(customerToBeUpdated).when(retailCustomerRepository).getOne(userId);
+        doReturn(customerToBeUpdated).when(retailCustomerRepository).getReferenceById(userId);
 
         ArgumentCaptor<RetailCustomer> argumentCaptor = ArgumentCaptor.forClass(RetailCustomer.class);
         userService.updateRetailCustomerProfile(retailUserForm);

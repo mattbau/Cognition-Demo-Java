@@ -41,7 +41,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void markAsRead(int notificationId, int userId) {
-        Notification notification = notificationRepository.getOne(notificationId);
+        Notification notification = notificationRepository.getReferenceById(notificationId);
         if (notification.getUser().getId() == userId) {
             notification.setRead(true);
             notificationRepository.save(notification);
@@ -61,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification getNotificationById(int notificationId) {
-        return notificationRepository.getOne(notificationId);
+        return notificationRepository.getReferenceById(notificationId);
     }
 
     @Override
